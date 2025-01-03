@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = "XLDownload";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <form class="form-group" ng-init="QC_Itemgroup()" ng-controller="Reporting">
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header" style="background-color:black">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <p style="font-weight:bold;color:white"> Create Inward QC Report</p>
+                            </div>
+                        </div>
+                    </div>
+                    </br >
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label>Branch</label>
+                                </div>
+                                <div class="col-6">
+                                    <select ng-model="BranchSelected" class="form-control" ng-change="QC_Page_BranchSelection();" ng-disabled="Disable_Branch_Selection">
+                                        <option value="">--Select--</option>
+                                        <option ng-repeat="x in BranchData" value="{{x.BranchId}}">{{x.BranchName}}</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+                                <label>From<strong class="text-danger">*</strong></label>
+                            </div>
+                            <div class="col-6">
+                                <input class="form-control" placeholder="Select Start Date..." moment-picker="Report.MomentStartDate" locale="en" format="DD-MM-YYYY" ng-model="Report.From"
+                                       ng-model-options="{ updateOn: 'blur' }" start-view="day" today="true" keyboard="true" show-header="true" autoclose="true"
+                                       set-on-select="false" id="calander_select" autocomplete="off" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+                                <label>To<strong class="text-danger">*</strong></label>
+                            </div>
+                            <div class="col-6">
+                                <input class="form-control" placeholder="Select Valid Date..." moment-picker="Report.MomentEndDate" ng-blur="QC_Itemgroup()" locale="en" format="DD-MM-YYYY" ng-model="Report.To"
+                                       ng-model-options="{ updateOn: 'blur' }" start-view="day" today="true" keyboard="true" show-header="true" autoclose="true"
+                                       set-on-select="false" id="calander_select" autocomplete="off" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+                                <label>ItemGroup</label>
+                            </div>
+                            <div class="col-6">
+                                <select ng-model="ItemGroup" class="form-control" @*ng_change="QC_Itemgroup()"*@>
+                                    <option value="">--Select--</option>
+                                    <option ng-repeat="x in ItemGrp" value="{{x.ItmsGrpCod}}">{{x.ItmsGrpNam}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label>Bin Location</label>
+                                </div>
+                                <div class="col-6">
+                                    <select ng-model="BinLoaction" class="form-control">
+                                        <option value="">--Select--</option>
+                                        <option value="P1">P1</option>
+                                        <option value="P2">P2</option>
+                                        <option value="Dispatch">Dispatch</option>
+                                        <option value="YG">YG</option>
+                                    </select>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" style="text-align: center;" class="btn btn-primary btn-sm" ng-click="CreateRepoert()">XLDownload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+

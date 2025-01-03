@@ -1,0 +1,546 @@
+﻿
+@{
+    /**/
+
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/bar.js"></script>
+<script src="~/Dough.js"></script>
+@*piebar*@
+<style>
+    .box {
+        border: 1px solid;
+        padding: 10px;
+        box-shadow: 5px 10px #888888;
+    }
+
+    #container, #container2, #container3 {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    #chart, #chart2, #chart3 {
+        max-width: 650px;
+        margin: 35px auto;
+    }
+
+    .apexcharts-toolbar {
+        display: none !important;
+    }
+    .anychart-credits a {
+        display: none;
+    }
+    #ac_path_2f311bb4_2r{
+        background-color:transparent;
+    }
+</style>
+@*pie*@
+<div ng-init="Getsellingpiebarchart();Getsellingpiebarcharttwo();Getsellingpiebarchartthree();">
+    <form>
+        <div class="form-group col-md-6 row">
+            <label class="col-sm-2 col-form-label"><strong>Date:</strong></label>
+            <div class="col-sm-6">
+                <input id="datetoday" class="form-control mt-1" value="@DateTime.Now.ToString("dd/MM/yyyy")" />
+            </div>
+        </div>
+    </form>
+    <div class="row" style="height:300px;margin-bottom:200px">
+
+        <div class="col-md-6 box">
+            <div id="container"></div>
+        </div>
+        <div class="col-md-6 box">
+            <h5 class="text-center mt-2"><b></b></h5>
+            <div id="chart"></div>
+        </div>
+    </div>
+    <div class="row" style="height:300px;margin-bottom:200px">
+
+        <div class="col-md-6 box">
+            <div id="container2"></div>
+        </div>
+        <div class="col-md-6 box">
+            <h5 class="text-center mt-2"><b></b></h5>
+            <div id="chart2"></div>
+        </div>
+    </div>
+    <div class="row" style="height:300px;margin-bottom:200px">
+        <div class="col-md-6 box">
+            <div id="container3"></div>
+        </div>
+        <div class="col-md-6 box">
+            <h5 class="text-center mt-2"><b></b></h5>
+            <div id="chart3"></div>
+        </div>
+    </div>
+</div>
+@*pie*@
+<script type="text/javascript">
+    debugger;
+        anychart.onDocumentReady(function () {
+            var d = sessionStorage.getItem("SellingList");
+            if (d != undefined && d != null) {
+                var SellingData = JSON.parse(d);
+            }
+            var arrtop = [];
+             var arrTopse = [];
+            for (var i = 0; i < SellingData.length; i++) {
+
+                arrtop.push([SellingData[i].U_ECOM, SellingData[i].NoofOrderedQuantity]);
+            }
+
+            for (var i = 0; i < arrtop.length; i++) {
+                arrTopse.push({x: arrtop[i][0], value: arrtop[i][1] });
+            }
+          
+           var chart =anychart.pie(arrTopse);
+            //var chart = anychart.pie([{ x: arrtop[1][0], value: arrtop[1][1] }]);
+
+    //var chart = anychart.pie([
+    //    { x: "Cycling", value: 10 },
+    //    { x: "Swimming", value: 12 },
+    //    { x: "Run", value: 18 },
+    //    { x: "Hiking", value: 11 },
+    //    { x: "Alpinism", value: 9 }
+    //]);
+
+    chart.innerRadius("25%");
+
+    var label = anychart.standalones.label();
+    label.text("Activities");
+    label.width("100%");
+    label.height("100%");
+    label.adjustFontSize(true);
+    label.fontColor("#60727b");
+    label.hAlign("center");
+    label.vAlign("middle");
+
+    // set the label as the center content
+    chart.center().content(label);
+
+    chart.title("Sales Order");
+    chart.container("container");
+    chart.draw();
+        });</script>
+@*bar*@
+<script>
+    var d = sessionStorage.getItem("SellingList");
+    if (d != undefined && d != null) {
+        var SellingData = JSON.parse(d);
+    }
+
+    var arrtop = [];
+    for (var i = 0; i < SellingData.length; i++) {
+
+        arrtop.push([SellingData[i].U_ECOM, SellingData[i].NoofOrderedQuantity]);
+    }
+    var arrQuantitysold = [];
+    for (var i = 0; i < SellingData.length; i++) {
+        if (SellingData[i].NoofOrderedQuantity != 0) { 
+        arrQuantitysold.push(SellingData[i].NoofOrderedQuantity);
+    }}
+   
+    var arrItemName = [];
+    for (var i = 0; i < SellingData.length; i++) {
+        if (SellingData[i].U_ECOM != null) {
+        arrItemName.push(SellingData[i].U_ECOM);
+    }}
+     var options = {
+        series: [{
+            name: 'Inflation',
+            //data: [2, 3, 4]
+            data: arrQuantitysold
+        }],
+        chart: {
+            height: 350,
+            type: 'bar',
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 10,
+                dataLabels: {
+                    position: 'top', // top, center, bottom
+                },
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+                return val + "";
+            },
+            offsetY: -20,
+            style: {
+                fontSize: '12px',
+                colors: ["#304758"]
+            }
+        },
+
+        xaxis: {
+            //categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            categories: arrItemName,
+            position: 'top',
+            axisBorder: {
+                show: false
+            },
+            axisTicks: {
+                show: false
+            },
+            crosshairs: {
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        colorFrom: '#D8E3F0',
+                        colorTo: '#BED1E6',
+                        stops: [0, 100],
+                        opacityFrom: 0.4,
+                        opacityTo: 0.5,
+                    }
+                }
+            },
+            tooltip: {
+                enabled: true,
+            }
+        },
+        yaxis: {
+            axisBorder: {
+                show: false
+            },
+            axisTicks: {
+                show: false,
+            },
+            labels: {
+                show: false,
+                formatter: function (val) {
+                    return val + "";
+                }
+            }
+
+        },
+        title: {
+            text: 'Sales Order, 2021',
+            floating: true,
+            offsetY: 330,
+            align: 'center',
+            style: {
+                color: '#444'
+            }
+        }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();
+
+
+</script>
+@*pie2*@
+<script type="text/javascript">
+    anychart.onDocumentReady(function () {
+        var d = sessionStorage.getItem("SellingListtwo");
+        if (d != undefined && d != null) {
+            var SellingDatatwo = JSON.parse(d);
+        }
+        var arrtop = [];
+        for (var i = 0; i < SellingDatatwo.length; i++) {
+
+            arrtop.push([SellingDatatwo[i].U_ECOM, SellingDatatwo[i].NoofOrderedQuantity]);
+        }
+
+        var arrTopse = [];
+
+        for (var i = 0; i < arrtop.length; i++) {
+            arrTopse.push({ x: arrtop[i][0], value: arrtop[i][1] });
+        }
+        var chart = anychart.pie(arrTopse);
+        //var chart = anychart.pie([
+        //    { x: "Cycling", value: 10 },
+        //    { x: "Swimming", value: 12 },
+        //    { x: "Run", value: 18 },
+        //    { x: "Hiking", value: 11 },
+        //    { x: "Alpinism", value: 9 }
+        //]);
+
+        chart.innerRadius("25%");
+
+        var label = anychart.standalones.label();
+        label.text("Activities");
+        label.width("100%");
+        label.height("100%");
+        label.adjustFontSize(true);
+        label.fontColor("#60727b");
+        label.hAlign("center");
+        label.vAlign("middle");
+
+        // set the label as the center content
+        chart.center().content(label);
+
+        chart.title("Invoice");
+        chart.container("container2");
+        chart.draw();
+    });</script>
+@*bar2*@
+<script>
+    var d = sessionStorage.getItem("SellingListtwo");
+    if (d != undefined && d != null) {
+        var SellingDatatwo = JSON.parse(d);
+    }
+
+    var arrtop = [];
+    for (var i = 0; i < SellingDatatwo.length; i++) {
+
+        arrtop.push([SellingDatatwo[i].U_ECOM, SellingDatatwo[i].NoofOrderedQuantity]);
+    }
+    var arrQuantitysold = [];
+    for (var i = 0; i < SellingDatatwo.length; i++) {
+        if (SellingDatatwo[i].NoofOrderedQuantity != 0) {
+        arrQuantitysold.push(SellingDatatwo[i].NoofOrderedQuantity);
+    }}
+    var arrItemName = [];
+    for (var i = 0; i < SellingDatatwo.length; i++) {
+        if (SellingDatatwo[i].U_ECOM != null) {
+        arrItemName.push(SellingDatatwo[i].U_ECOM);
+    }}
+    var options = {
+        series: [{
+            name: 'Inflation',
+            //data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2]
+            data: arrQuantitysold
+        }],
+        chart: {
+            height: 350,
+            type: 'bar',
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 10,
+                dataLabels: {
+                    position: 'top', // top, center, bottom
+                },
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+                return val + "";
+            },
+            offsetY: -20,
+            style: {
+                fontSize: '12px',
+                colors: ["#304758"]
+            }
+        },
+
+        xaxis: {
+            //categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            categories: arrItemName,
+            position: 'top',
+            axisBorder: {
+                show: false
+            },
+            axisTicks: {
+                show: false
+            },
+            crosshairs: {
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        colorFrom: '#D8E3F0',
+                        colorTo: '#BED1E6',
+                        stops: [0, 100],
+                        opacityFrom: 0.4,
+                        opacityTo: 0.5,
+                    }
+                }
+            },
+            tooltip: {
+                enabled: true,
+            }
+        },
+        yaxis: {
+            axisBorder: {
+                show: false
+            },
+            axisTicks: {
+                show: false,
+            },
+            labels: {
+                show: false,
+                formatter: function (val) {
+                    return val + "";
+                }
+            }
+
+        },
+        title: {
+            text: 'Invoice',
+            floating: true,
+            offsetY: 330,
+            align: 'center',
+            style: {
+                color: '#444'
+            }
+        }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#chart2"), options);
+    chart.render();
+
+
+</script>
+@*pie3*@
+<script type="text/javascript">
+    anychart.onDocumentReady(function () {
+        var d = sessionStorage.getItem("SellingListthree");
+        if (d != undefined && d != null) {
+            var SellingDatathree = JSON.parse(d);
+        }
+        var arrtop = [];
+        for (var i = 0; i < SellingDatathree.length; i++) {
+
+            arrtop.push([SellingDatathree[i].U_ECOM, SellingDatathree[i].NoofOrderedQuantity]);
+        }
+
+        var arrTopse = [];
+
+        for (var i = 0; i < arrtop.length; i++) {
+            arrTopse.push({ x: arrtop[i][0], value: arrtop[i][1] });
+        }
+        var chart = anychart.pie(arrTopse);
+        //var chart = anychart.pie([
+        //    { x: "Cycling", value: 10 },
+        //    { x: "Swimming", value: 12 },
+        //    { x: "Run", value: 18 },
+        //    { x: "Hiking", value: 11 },
+        //    { x: "Alpinism", value: 9 }
+        //]);
+
+        chart.innerRadius("25%");
+
+        var label = anychart.standalones.label();
+        label.text("Activities");
+        label.width("100%");
+        label.height("100%");
+        label.adjustFontSize(true);
+        label.fontColor("#60727b");
+        label.hAlign("center");
+        label.vAlign("middle");
+
+        // set the label as the center content
+        chart.center().content(label);
+
+        chart.title("Delivery");
+        chart.container("container3");
+        chart.draw();
+    });</script>
+@*bar3*@
+<script>
+    var d = sessionStorage.getItem("SellingListthree");
+    if (d != undefined && d != null) {
+        var SellingDatathree = JSON.parse(d);
+    }
+
+    var arrtop = [];
+    for (var i = 0; i < SellingDatathree.length; i++) {
+
+        arrtop.push([SellingDatathree[i].U_ECOM, SellingDatathree[i].NoofOrderedQuantity]);
+    }
+    var arrQuantitysold = [];
+    for (var i = 0; i < SellingDatathree.length; i++) {
+        if (SellingData[i].NoofOrderedQuantity != 0) {
+
+        arrQuantitysold.push(SellingData[i].NoofOrderedQuantity);
+    }}
+    var arrItemName = [];
+    for (var i = 0; i < SellingDatathree.length; i++) {
+        if (SellingDatathree[i].U_ECOM != null) {
+        arrItemName.push(SellingDatathree[i].U_ECOM);
+    }}
+    var options = {
+        series: [{
+            name: 'Inflation',
+            //data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2]
+            data: arrQuantitysold
+        }],
+        chart: {
+            height: 350,
+            type: 'bar',
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 10,
+                dataLabels: {
+                    position: 'top', // top, center, bottom
+                },
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+                return val + "";
+            },
+            offsetY: -20,
+            style: {
+                fontSize: '12px',
+                colors: ["#304758"]
+            }
+        },
+
+        xaxis: {
+            //categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            categories: arrItemName,
+            position: 'top',
+            axisBorder: {
+                show: false
+            },
+            axisTicks: {
+                show: false
+            },
+            crosshairs: {
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        colorFrom: '#D8E3F0',
+                        colorTo: '#BED1E6',
+                        stops: [0, 100],
+                        opacityFrom: 0.4,
+                        opacityTo: 0.5,
+                    }
+                }
+            },
+            tooltip: {
+                enabled: true,
+            }
+        },
+        yaxis: {
+            axisBorder: {
+                show: false
+            },
+            axisTicks: {
+                show: false,
+            },
+            labels: {
+                show: false,
+                formatter: function (val) {
+                    return val + "";
+                }
+            }
+
+        },
+        title: {
+            text: 'Delivery',
+            floating: true,
+            offsetY: 330,
+            align: 'center',
+            style: {
+                color: '#444'
+            }
+        }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#chart3"), options);
+    chart.render();
+
+
+</script>

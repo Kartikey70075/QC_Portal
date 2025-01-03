@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="Sahib">
+  <DataContextMoniker Name="/SahibDataContext" />
+  <nestedChildShapes>
+    <classShape Id="df7156a1-ef24-4879-85a2-9e5ab10b0435" isExpanded="false" absoluteBounds="3, 0.5, 2, 0.45">
+      <DataClassMoniker Name="/SahibDataContext/_USERLOGIN" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1aaf96ba-5093-4485-93fb-53acfbee78bc" absoluteBounds="3.0149999999999997, 0.96, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="b4a71d45-a116-4ed5-b47c-3171773af358" isExpanded="false" absoluteBounds="5.75, 0.5, 2, 0.45">
+      <DataClassMoniker Name="/SahibDataContext/_USERDETAIL" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f95fc299-4396-4f10-9d56-aac0261a4ea5" absoluteBounds="5.765, 0.96, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="65ad72b0-c949-45a5-83f1-872c1b1bb9ea" isExpanded="false" absoluteBounds="3.125, 2.625, 2, 0.45">
+      <DataClassMoniker Name="/SahibDataContext/OCRD" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ed768f4b-3da1-484d-87aa-5e1d3e9162e8" absoluteBounds="3.1399999999999997, 3.085, 1.9700000000000002, 71.2086181640625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="dd87a047-7cfd-48d8-bc4a-8417c55bbed9" isExpanded="false" absoluteBounds="3.25, 1.5, 2, 0.45">
+      <DataClassMoniker Name="/SahibDataContext/OCPR" />
+      <nestedChildShapes>
+        <elementListCompartment Id="dbaad400-8e55-434f-8cfe-16bc582bf3fa" absoluteBounds="3.2649999999999997, 1.96, 1.9700000000000002, 10.0567626953125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="f4543c78-8348-43fe-9caa-9cf91a32b7b8" isExpanded="false" absoluteBounds="0.5, 1.5, 2, 0.45">
+      <DataClassMoniker Name="/SahibDataContext/OITM" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9f4d77b6-7fe6-47b7-9bd0-82535e07387d" absoluteBounds="0.51499999999999968, 1.96, 1.9700000000000002, 62.5550537109375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9e6440e2-2985-459c-bc2d-0aa7160e198f" isExpanded="false" absoluteBounds="6, 2.5, 2, 0.45">
+      <DataClassMoniker Name="/SahibDataContext/OSTC" />
+      <nestedChildShapes>
+        <elementListCompartment Id="21ac8320-d83a-49bf-ab0c-40a24f7523c6" absoluteBounds="6.015, 2.96, 1.9700000000000002, 3.7108154296875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="b7da786a-f74c-41dd-9252-64668e80ab28" isExpanded="false" absoluteBounds="5.875, 1.5, 2, 0.45">
+      <DataClassMoniker Name="/SahibDataContext/OBPL" />
+      <nestedChildShapes>
+        <elementListCompartment Id="653fe055-d9be-47f3-9f47-d827e702cc15" absoluteBounds="5.89, 1.96, 1.9700000000000002, 10.825968424479166" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="377d16b2-9c6f-4a00-8875-4cca233e0c4b" isExpanded="false" absoluteBounds="0.5, 2.625, 2, 0.45">
+      <DataClassMoniker Name="/SahibDataContext/NNM1" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5b093d73-b55a-4222-84e2-82efbd554d89" absoluteBounds="0.51499999999999968, 3.085, 1.9700000000000002, 6.5953369140625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ff9e7128-582d-4ba1-89eb-68fe5566f8b0" isExpanded="false" absoluteBounds="0.5, 0.5, 2, 0.45">
+      <DataClassMoniker Name="/SahibDataContext/OSCN" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2438c7d9-eb54-46ef-b6b2-5a41649768ab" absoluteBounds="0.51499999999999968, 0.96, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9715e4b1-59d1-4db9-930c-416c462beca7" isExpanded="false" absoluteBounds="0.5, 3.5, 2, 0.45">
+      <DataClassMoniker Name="/SahibDataContext/ORDR" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3939d370-028a-4983-9d4d-d4845bfd57d1" absoluteBounds="0.51499999999999968, 3.96, 1.9700000000000002, 83.9005126953125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4f17d7fb-5b53-45d3-9b8e-61353eaa1183" isExpanded="false" absoluteBounds="3.125, 3.5, 2, 0.45">
+      <DataClassMoniker Name="/SahibDataContext/OCRG" />
+      <nestedChildShapes>
+        <elementListCompartment Id="538aec52-cf52-4f22-8f4d-fb214dd7f95e" absoluteBounds="3.1399999999999997, 3.96, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="02aaa741-8a99-4059-b84e-eaa7f44609c4" isExpanded="false" absoluteBounds="5.625, 3.375, 2, 0.45">
+      <DataClassMoniker Name="/SahibDataContext/OCRN" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a3486343-7644-4474-983d-b0ce7bbe4183" absoluteBounds="5.64, 3.835, 1.9700000000000002, 5.6338297526041661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d764ba96-18b3-4950-bf77-57db4c469ba4" isExpanded="false" absoluteBounds="5.625, 4.125, 2, 0.45">
+      <DataClassMoniker Name="/SahibDataContext/OCRY" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b167398b-c826-4762-966c-450f1f66fbd8" absoluteBounds="5.64, 4.585, 1.9700000000000002, 3.903116861979167" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="16a35dd7-11ca-48a0-b739-926b41e601d1" isExpanded="false" absoluteBounds="3.125, 4.25, 2, 0.45">
+      <DataClassMoniker Name="/SahibDataContext/OCST" />
+      <nestedChildShapes>
+        <elementListCompartment Id="fbaec20d-b6ff-4272-8d2a-339e87edb7eb" absoluteBounds="3.1399999999999997, 4.71, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

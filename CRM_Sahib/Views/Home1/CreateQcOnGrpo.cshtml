@@ -1,0 +1,785 @@
+﻿
+@{
+    ViewBag.Title = "CreateQcOnGrpo";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*<div class="form-row">
+        <div class="form-row" style="margin-left:25px;">
+            @using (Html.BeginForm("CreateQcOnGrpo", "Home1", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div>
+                    @Html.TextBox("file", "", new { type = "file" }) <br />
+                    <input type="submit" value="Upload" />
+
+                </div>
+            }
+        </div>
+    </div>*@
+<div class="container-fluid">
+    <form class="form-group" ng-init="QC_Page_init();" ng-submit="CreateGRPOQC()" ng-controller="QcPage">
+        <div class="row mt-1">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header" style="background-color:black">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <p style="font-weight:bold;color:white"> Create New Inspection Report On Basis Of Grpo</p>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="card-body" style="background-color:white">
+                        <p style="font-weight:bold">Inspection Details</p> <hr />
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>Vendor Code</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <div angucomplete-alt id="JoworkerCode" placeholder="Enter JobWorker Code" pause="100" ng-model="GRPOQC.VendorCode" local-search="filterFunction"
+                                             selected-object="AfterSelectedVedorCodeGRPOQC" local-data="OCRDdata" search-fields="CardCode" input-class="form-control"
+                                             title-field="CardCode" description-field="CardName" minlength="1" match-class="highlight"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>Inspection Date</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input class="form-control" placeholder="Select Inspection Date..." moment-picker="GRPOQC.InspectionDate" locale="en" format="DD-MM-YYYY" min-date="today" ng-model="GRPOQC.InspectionDate"
+                                               ng-model-options="{ updateOn: 'blur' }" start-date="today" start-view="day" today="true" keyboard="true" show-header="true" autoclose="true"
+                                               set-on-select="false" id="calander_select" autocomplete="off" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>Vendor Name</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <div angucomplete-alt id="JoworkerName" placeholder="Enter JobWorker Name" pause="100" ng-model="GRPOQC.VendorName" local-search="filterFunction"
+                                             selected-object="AfterSelectedVedorCodeGRPOQC" local-data="OCRDdata" search-fields="CardName" input-class="form-control"
+                                             title-field="CardName" description-field="CardCode" minlength="1" match-class="highlight"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>GRPO No.</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <select ng-model="GRPOQC.DocEntry" class="form-control" ng-change="GRPOdocChange();">
+                                            <option value="">--Select--</option>
+                                            <option ng-repeat="x in GRPOData" value="{{x.DocEntry}}">{{x.DocNum}} - {{x.NumAtCard}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>GRN Quantity</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" ng-model="sumOfQuantity | number :1" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>BP Refrence Number</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" ng-model="BpRefrenceNumber" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>Base Ref</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" ng-model="BaseRef" />
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>User Name</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" disabled ng-model="UserName" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>User Email</label>
+                                    </div>
+                                    <div class="col-6">
+                                        @*<div angucomplete-alt id="Email" placeholder="Enter the Email" pause="100" ng-model="GRPOQC.Email" local-search="filterFunction"
+                                            selected-object="AfterSelectedVedorCodeGRPOQC" local-data="OCRDdata" search-fields="CardName" input-class="form-control"
+                                            title-field="CardName" description-field="CardCode" minlength="1" match-class="highlight"></div>*@
+                                        <input type="text" class="form-control" disabled ng-model="GRPOQC.Email" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>Remarks</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" placeholder="Remarks" ng-model="Remarks" />
+                                    </div>
+                                </div>
+                            </div>
+                            @*</div>*@
+                            <div class="col-6" hidden>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>Email</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" value="@Session["Email"]" class="form-control" id="sessionEmailId" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>Manual Date</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input class="form-control" placeholder="Select Date..." moment-picker="ManualDate" locale="en" format="DD-MM-YYYY" @*min-date="today"*@ ng-model="ManualDate"
+                                               ng-model-options="{ updateOn: 'blur' }" @*start-date="today" start-view="day" today="true" keyboard="true" show-header="true"*@ autoclose="true"
+                                               set-on-select="ture" id="calander_select" autocomplete="off" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6" hidden>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>Bin Location</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <select ng-model="BinLoaction" class="form-control">
+                                            <option value="">--Select--</option>
+                                            <option value="P1">P1</option>
+                                            <option value="P2">P2</option>
+                                            <option value="Dispatch">Dispatch</option>
+                                            <option value="YG">YG</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>QC Type</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <select ng-model="QcType" class="form-control">
+                                            <option value="">--Select--</option>
+                                            <option value="Production">Production</option>
+                                            <option value="Sample">Sample</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="row" hidden>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>File Name</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" value="@TempData["Path"]" class="form-control" id="Path" disabled />
+                                        </div>
+                                    </div>
+                                </div>*@
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>Sample Quantity</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" ng-model="SampleQuantity" ng-change="ShowAll()" ng-class="{'border-red': SampleQuantity < 1 || SampleQuantity === ''}" />
+                                    </div>
+                                </div>
+                            </div>
+                            @*</div>*@
+                            <div class="row" hidden>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>User Id</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" value="@Session["UserName"]" class="form-control" id="sessionUSerId" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <p style="font-weight:bold" class="mt-2">QA Protocol</p> <hr />
+                        <!-- New Development Start BY wamique shaikh A. on 10 Feb 2021-->
+                        <!--New Design by Poonam on 13 Feb 2021-->
+                        <div ng-show="show">
+                            <div class="row">
+                                <div class="col-md-12 table-responsive">
+                                    <p>Row Level Item</p>
+                                    <hr />
+                                    <table class="table table table-bordered table-striped table-hover">
+                                        <tr>
+                                            <th>Checked</th>
+                                            <th>Line Num</th>
+                                            <th>Item Code</th>
+                                            <th>Description</th>
+                                            <th>GRN Quantity</th>
+                                            <th>Sample Quantity</th>
+                                        </tr>
+                                        <tr ng-repeat="d in GRPORowItemDetails">
+                                            <td><input type="checkbox" class="form-control" ng-model="d.IsItemSelected" ng-change="ItemSelected($index,d);" /></td>
+                                            <td>{{d.LineNum}}</td>
+                                            <td>{{d.ItemCode}}</td>
+                                            <td>{{d.Dscription}}</td>
+                                            <td>{{d.Quantity | number:1}}</td>
+                                            <td><input type="text" class="form-control" ng-model="ActualSampleQuantity" /></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="w" ng-repeat="d in selecteditem">
+                                <header id="title">
+                                    <h1>{{d.ItemCode}}</h1>
+                                </header>
+                                <div class="row mb-3 mr-2">
+                                    <div class="col-12 table-responsive container">
+                                        <table class="table table-bordered table-striped" @*style="width:100%;"*@>
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align:center;" @*rowspan="1"*@>Line No.</th>
+                                                    <th style="text-align:center;" @*rowspan="1"*@>Description</th>
+                                                    <th style="text-align:center;" @*rowspan="1"*@>Instrument</th>
+                                                    <th style="text-align:center;" @*rowspan="1">*@>Minimum</th>
+                                                    <th style="text-align:center;" @*rowspan="1"*@>Maximum</th>
+                                                    <th style="text-align:center;" @*rowspan="1"*@>Tolerance</th>
+                                                    <th style="text-align:center;" colspan="{{d.SampleQuantity}}">Sample</th>
+                                                    <th style="text-align:center;" @*rowspan="1"*@>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="x in d.Parameters">
+                                                    <td style="text-align:center">{{$index+1}}</td>
+                                                    <td>
+                                                        <input class="form-control" ng-model="x.Description" disabled placeholder="Enter Description" />
+                                                    </td>
+                                                    <td><input class="form-control" ng-model="x.Instrument" disabled placeholder="Enter Instrument" /></td>
+                                                    <td>
+                                                        <input class="form-control" ng-model="x.Minimum" disabled placeholder="Enter MinimumValue" />
+                                                    </td>
+                                                    <td><input class="form-control" ng-model="x.Maximum" disabled placeholder="Enter MaximumValue" /></td>
+                                                    <td><input class="form-control" ng-model="x.Tolerance" disabled placeholder="Enter Tolerance" /></td>
+                                                    <td @*colspan="{{d.SampleQuantity}}"*@ ng-repeat="z in x.ObsArr"><input type="text" class="form-control" style="color:black;width:60px;" ng-model="z.Observ" required /></td>
+                                                    <td>
+                                                        <select class="form-control" ng-model="x.U_Status" style="width:auto">
+                                                            <option value="">--Select--</option>
+                                                            <option value="PASS">Pass</option>
+                                                            <option value="REJECT">Reject</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3 mr-2">
+                                    <div class="col-4">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="float-right">Total Accept Quantity</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <input class="form-control" @*placeholder="0"*@ ng-model="d.totalpass" required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="float-right">Accept WareHouse</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <select ng-model="d.QC_PassWarehouses" class="form-control">
+                                                    <option value="">--Select--</option>
+                                                    <option ng-repeat="x in QC_WareHouses" value="{{x.WhsCode}}">{{x.WhsCode}}</option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3 mr-2">
+                                    <div class="col-4">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="float-right">Reject Quantity</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <input class="form-control" @*placeholder="0"*@ ng-model="d.rejectqty" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="float-right">Reject-Warehouse</label>
+                                            </div>
+                                            <div class="col-4">
+                                                @*<input type="text" class="form-control" ng-model="d.QC_RejectWareHouses" disabled />*@
+                                                <select ng-model="d.QC_RejectWareHouses" class="form-control">
+                                                    <option value="">--Select--</option>
+                                                    <option ng-repeat="x in QC_WareHouses" value="{{x.WhsCode}}">{{x.WhsCode}}</option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3 mr-2" hidden>
+                                    <div class="col-4">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="float-right">Total Shortage Quantity</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <input class="form-control" @*placeholder="0"*@ ng-model="d.shortageqty" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4" hidden>
+
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="float-right">Shortage-Warehouse</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <input type="text" class="form-control" ng-model="d.QC_ShortageWarehouses" disabled />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3 mr-2">
+                                    <div class="col-4">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="float-right">Total Holding Quantity</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <input class="form-control" @*placeholder="0"*@ ng-model="d.holdingqty" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="float-right">Holding-Warehouse</label>
+                                            </div>
+                                            <div class="col-4">
+                                                @*<input type="text" class="form-control" ng-model="d.QC_HoldWarehouses" disabled />*@
+                                                <select ng-model="d.QC_HoldWarehouses" class="form-control">
+                                                    <option value="">--Select--</option>
+                                                    <option ng-repeat="x in QC_WareHouses" value="{{x.WhsCode}}">{{x.WhsCode}}</option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3 mr-2">
+                                    <div class="col-4">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="float-right"> Total Extra Quantity</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <input class="form-control" @*placeholder="0"*@ ng-model="d.extraqty" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="float-right">Extra-Warehouse</label>
+                                            </div>
+                                            <div class="col-4">
+                                                @*<input type="text" class="form-control" ng-model="d.QC_ExtraWherehouses" disabled />*@
+                                                <select ng-model="d.QC_ExtraWherehouses" class="form-control">
+                                                    <option value="">--Select--</option>
+                                                    <option ng-repeat="x in QC_WareHouses" value="{{x.WhsCode}}">{{x.WhsCode}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3 mr-2" hidden>
+                                    <div class="col-4">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="float-right"> Rework Quantity</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <input class="form-control" @*placeholder="0"*@ ng-model="d.reworkqty" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="float-right">Rework-Warehouse</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <input type="text" class="form-control" ng-model="d.QC_ReworkWarehouses" disabled />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3 mr-2" hidden>
+                                    <div class="col-4">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="float-right">Bundles</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <input class="form-control" @*placeholder="0"*@ ng-model="d.Bundles" numbers-Only />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!--<hr style="border-top: 1px solid black;" />
+                                <div class="row mb-3 mr-2">
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="float-right">Sample Quantity</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <input class="form-control" ng-model="d.SampleQuantity" placeholder="0" disabled numbers-Only  />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="float-right">Sample Pass Quantity</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <input class="form-control"-->
+                                @*placeholder="0"*@
+                                <!--ng-model="d.samplepass" numbers-Only  />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="float-right">Sample Reject Quantity</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <input class="form-control"-->
+                                @*placeholder="0"*@
+                                <!--ng-model="d.samplerej" ng-disabled="!d.samplepass"  />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label class="float-right">Current Warehouse</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <input class="form-control" placeholder="0" ng-model="d.FromWhsCode" disabled />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>-->
+
+                                <div id="page" ng-repeat="d in arrPackSizeForQC">
+                                    <table id="cart">
+                                        <thead class="text-center">
+                                            <tr>
+                                                <th class="first">#</th>
+                                                <th class="second">Total</th>
+                                                <th class="third"></th>
+                                                <th class="fourth">Warehouse</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="productitm">
+                                                <td>
+                                                    Total Qty
+                                                </td>
+                                                <td>{{d.Quantity}}</td>
+                                                <td></td>
+                                                <td>-</td>
+                                            </tr>
+                                            <tr class="productitm">
+                                                <td>Pass</td>
+                                                <td><input type="text" ng-model="d.PassQty" class="form-control" ng-change="QuantityCalculation($index)" /></td>
+                                                <td></td>
+                                                <td>
+                                                    <select class="custom-select custom-select-sm" ng-model="d.WhsCodePass">
+                                                        <option ng-repeat="d in PassWarehouse" value="{{d.U_WhsCode}}">{{d.U_WhsName}}</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr class="productitm">
+                                                <td>Reject</td>
+                                                <td><input type="text" ng-model="d.RejectedQty" class="form-control" ng-change="QuantityCalculation($index)" /></td>
+                                                <td></td>
+                                                <td>
+                                                    <select class="custom-select custom-select-sm" ng-model="d.WhsCodeReject">
+                                                        <option ng-repeat="d in RejectWarehouse" value="{{d.U_WhsCode}}">{{d.U_WhsName}}</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr class="productitm">
+                                                <td>Hold</td>
+                                                <td><input type="text" ng-model="d.OnHold" class="form-control" ng-change="QuantityCalculation($index)" /></td>
+                                                <td></td>
+                                                <td>
+                                                    <select class="custom-select custom-select-sm" ng-model="d.WhsCodeHold">
+                                                        <option ng-repeat="d in HoldWarehouse" value="{{d.U_WhsCode}}">{{d.U_WhsName}}</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr class="productitm"></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div id="w" ng-repeat="d in arrGRPORL">
+                                <header id="title">
+                                    <h1>{{d.ItemCode}}</h1>
+                                </header>
+                                <div class="row m-2">
+                                    <div class="col-6">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Item Weight</label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" class="form-control" placeholder="Enter Item Weight" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Bales</label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" class="form-control" placeholder="Enter Bales" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 table-responsive" ng-if="paramsGRPOIL.length > 0">
+                                    <table class="table table table-bordered table-striped table-hover">
+                                        <tr>
+                                            @*<th>Item Code</th>
+                                                <th>Description</th>*@
+                                            <th>Inspection Level</th>
+                                            <th>Quantity</th>
+                                            <th>Checking</th>
+                                            <th>Observation</th>
+                                            <th>Status</th>
+                                            <th>Remarks</th>
+                                        </tr>
+                                        <tr ng-repeat="d in paramsGRPOIL">
+                                            @*<td>{{d.ItemCode}}</td>
+                                                <td>{{d.Dscription}}</td>*@
+                                            <td>
+                                                {{d.U_QCDES}}
+                                            </td>
+
+                                            <td><input type="text" ng-model="d.Quantity" class="form-control" /></td>
+                                            <td><input type="text" ng-model="d.Checking" class="form-control" /></td>
+                                            <td><input type="text" ng-model="d.Observation" ng-change="AssignRemarksByObservation(d)" class="form-control" /></td>
+                                            <td>
+                                                <select ng-model="d.Status" disabled>
+                                                    <option>--Select--</option>
+                                                    <option>Pass</option>
+                                                    <option>Reject</option>
+                                                </select>
+                                            </td>
+                                            <td><input type="text" ng-model="d.Remarks" class="form-control" disabled /></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div id="page">
+                                    <table id="cart">
+                                        <thead class="text-center">
+                                            <tr>
+                                                <th class="first">#</th>
+                                                <th class="second">Total</th>
+                                                <th class="third"></th>
+                                                <th class="fourth">Warehouse</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="productitm">
+                                                <td>
+                                                    Total Qty
+                                                </td>
+                                                <td>{{d.Quantity}}</td>
+                                                <td></td>
+                                                <td>-</td>
+                                            </tr>
+                                            <tr class="productitm">
+                                                <td>Pass</td>
+                                                <td><input type="text" ng-model="d.PassQty" class="form-control" ng-change="QuantityCalculation($index)" /></td>
+                                                <td></td>
+                                                <td>
+                                                    <select class="custom-select custom-select-sm" ng-model="d.WhsCodePass">
+                                                        @*<option>--Select Wherehouse--</option>*@
+                                                        <option ng-repeat="d in PassWarehouse" value="{{d.U_WhsCode}}">{{d.U_WhsName}}</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr class="productitm">
+                                                <td>Reject</td>
+                                                <td><input type="text" ng-model="d.RejectedQty" class="form-control" ng-change="QuantityCalculation($index)" /></td>
+                                                <td></td>
+                                                <td>
+                                                    <select class="custom-select custom-select-sm" ng-model="d.WhsCodeReject">
+                                                        @*<option>--Select Wherehouse--</option>*@
+                                                        <option ng-repeat="d in RejectWarehouse" value="{{d.U_WhsCode}}">{{d.U_WhsName}}</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr class="productitm">
+                                                <td>Hold</td>
+                                                <td><input type="text" ng-model="d.OnHold" class="form-control" ng-change="QuantityCalculation($index)" /></td>
+                                                <td></td>
+                                                <td>
+                                                    <select class="custom-select custom-select-sm" ng-model="d.WhsCodeHold">
+                                                        @*<option>--Select Wherehouse--</option>*@
+                                                        <option ng-repeat="d in HoldWarehouse" value="{{d.U_WhsCode}}">{{d.U_WhsName}}</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+
+                                            <tr class="productitm">
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            @*<hr />*@
+                            <hr />
+
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-sm btn-secondary" style="margin-bottom:20px;">Create Inspection Report</button>
+                                    @*ng-disabled="!Isdiable"*@
+                                </div>
+                            </div>
+                        </div>
+                        <div id="RejectedQty" class="modal fade" data-backdrop="static" data-keyboard="false">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Enter Observation</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <br />
+
+                                        <div>
+                                            <div class="container">
+                                                <div class="row table-responsive" ng-hide="showlbl">
+                                                    <table class="table table-bordered table-striped table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center" ng-repeat="x in GRPOQCRow">{{x.U_QCDES}}</th>
+                                                                @*<th>#</th>*@
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="text-center" ng-repeat="x in GRPOQCRow"><input type="checkbox" ng-model="x.Checked" /></td>
+                                                                @*<td><button type="button" class="btn btn-success btn-sm">Add</button></td>*@
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" style="text-align: center;" class="btn btn-primary btn-sm" data-dismiss="modal" ng-click="GetRejectedRow();">Choose</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+</div>
+<style>
+    .border-red {
+        border-color: red !important;
+    }
+</style>
+

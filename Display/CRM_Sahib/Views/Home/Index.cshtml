@@ -1,0 +1,221 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div ng-init="IndexPageInit();">
+
+    <div class="container-fluid" @*ng-controller="CustomerCntrl"*@ @*ng-init="CustomerINIT(); "*@>
+        <form class="form-group" @*ng-submit="SubmitCustomer()"*@>
+            <div class="row mt-2 mb-1">
+                <div class="col-9">
+                    <div class="row ml-1">
+                        <h4 style="text-decoration:underline"><b>CreateUser</b></h4>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card baseBlock">
+                <div class="card-body">
+
+                    <div class="row">
+                            @*<div class="col-6">
+                                <div class="row">
+                                    <div class="col-4">
+                                        
+                                    </div>
+                                    <div class="col-6">
+                                        <label>Code<strong class="text-danger">*</strong></label>
+                                        <input type="text" class="form-control" ng-model="Code" />
+                                        </div>
+                                </div>
+                            </div>*@
+
+                           <div class="col-6">
+                                <div class="row">
+                                    <div class="col-4">
+                                        </div>
+                                    <div class="col-6">
+                                        <label>Name<strong class="text-danger">*</strong></label>
+                                        <input type="text" class="form-control" ng-model="Name" />
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+
+                           
+                    <div class="row">
+
+
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+
+                                </div>
+                                <div class="col-6">
+                                    <label>User Id<strong class="text-danger">*</strong></label>
+                                    <input type="text" class="form-control" ng-model="U_UserId" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+
+
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+
+                                </div>
+                                <div class="col-6">
+                                    <label>First Name<strong class="text-danger">*</strong></label>
+                                    <input type="text" class="form-control" ng-model="U_UserName" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+
+                                </div>
+                                <div class="col-6">
+                                    <label>Last Name<strong class="text-danger">*</strong></label>
+                                    <input type="text" class="form-control" ng-model="U_Name" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label>Designation<strong class="text-danger">*</strong></label>
+                                    <input type="text" ng-model="U_Designation" class="form-control"/>
+                                    @*<select ng-model="U_Designation" sclass="form-control">
+                                        <option value="0">--Select---</option>
+                                        <option ng-repeat="x in designame" ng-model="Designation" value="{{x.designame}}">{{x.designame}}</option>
+                                    </select>*@
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+
+                                </div>
+                                <div class="col-6">
+                                    <label>Branch<strong class="text-danger">*</strong></label>
+                                    <select class="form-control" required ng-model="U_BranchId">
+                                        <option value="0">--Select--</option>
+                                        <option value="FRAGRANCE">FRAGRANCE</option>
+                                        <option value="FLAVOUR">FLAVOUR</option>
+                                        <option value="ESSENTIAL OIL">ESSENTIAL OIL</option>
+                                        <option ng-repeat="x in OBPLData" value="{{x.BPLId}}">{{x.BPLName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+
+                                </div>
+                                <div class="col-6">
+                                    <label>Mobile 1<strong class="text-danger">*</strong></label>
+                                    <input type="text" class="form-control" ng-model="U_Mobile1" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+                                </div>
+                                <div class="col-6">
+                                    <label>Reporting Head<strong class="text-danger">*</strong></label>
+                                    <input type="text" class="form-control" ng-model="U_ReportingHead" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label>User Status<strong class="text-danger">*</strong></label>
+                        <select class="form-control" required ng-model="U_UserStatus">
+                            <option value="0">--Select--</option>
+                            <option value="Active">Active</option>
+                            <option value="FLAVOUR">Inactive</option>
+                        </select>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+                            </div>
+                            <div class="col-6">
+                                <label>Email Id<strong class="text-danger">*</strong></label>
+                                <input type="text" class="form-control" ng-model="U_EmailId" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+
+                            </div>
+                            <div class="col-6">
+                                <label>Islocked <strong class="text-danger">*</strong></label>
+                                <input type="text" class="form-control" ng-model="U_Locked" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+                            </div>
+                            <div class="col-6">
+                                <label>Mobile 2 <strong class="text-danger">*</strong></label>
+                                <input type="text" class="form-control" ng-model="U_Mobile2" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+
+                            </div>
+                            <div class="col-6">
+                                <label>User Type <strong class="text-danger">*</strong></label>
+                                <input type="text" class="form-control" ng-model="U_UserType" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <input type="Submit" class="btn btn-sm btn-success" id="insertUser" ng-click="InsertUser()" value="Submit" style="float:right"> 
+                    </div>
+                </div>
+            </div>
+    </div>
+
+</div>
+
+

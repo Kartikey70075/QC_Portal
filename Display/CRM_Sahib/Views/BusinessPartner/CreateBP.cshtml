@@ -1,0 +1,760 @@
+﻿
+@{
+    ViewBag.Title = "CreateBP";
+}
+
+<div ng-init="CreateBusinessPartnerINIT();">
+    <form class="form-group" name="createBP" ng-submit="PunchBusinessPartner();">
+        <div class="row mt-2 mb-1">
+            <div class="col-9">
+                <div class="row ml-1">
+                    <h4 style="text-decoration:underline"><b>Business Partners</b></h4>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="row ">
+                    <div class="col-6">
+                        <label class="control-label float-right">Date</label>
+                    </div>
+                    <div class="col-6">
+                        <input id="datetoday" class="form-control" value="@DateTime.Now.ToString("dd-MM-yyyy")" disabled />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-12">
+                <div class="card rounded">
+                    <div class="card-body rounded">
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">General Information</legend>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Series<strong class="text-danger">*</strong></label>
+                                        </div>
+                                        <div class="col-6">
+                                            <select ng-model="BusinessPartnerList.Series" ng-disabled="!BusinessPartnerList.Type" required ng-change="getcuscode()" class="form-control">
+                                                <option value="">Select</option>
+                                                <option ng-repeat="e in seriesData|filter:{DocSubType:BusinessPartnerList.Type}" value="{{e.Series}}">{{e.SeriesName}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Code<strong class="text-danger">*</strong></label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" placeholder="Enter the customer code" class="form-control" ng-model="BusinessPartnerList.CustomerCode" ng-disabled="!(type==1 || type==2)">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Type<strong class="text-danger">*</strong></label>
+                                        </div>
+                                        <div class="col-6">
+                                            <select ng-model="BusinessPartnerList.Type" class="form-control">
+                                                <option value="" disabled>Select</option>
+                                                <option value="C">Customer</option>
+                                                <option value="S">Vendor</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row mt-1">
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Name<strong class="text-danger">*</strong></label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" placeholder="Enter the name" ng-model="BusinessPartnerList.CustomerName" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Group<strong class="text-danger">*</strong></label>
+                                        </div>
+                                        <div class="col-6">
+                                            <select ng-model="BusinessPartnerList.Group" class="form-control">
+                                                <option value="">Select</option>
+                                                <option ng-repeat="x in GroupData" value="{{x.GroupCode}}">{{x.GroupName}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Currency<strong class="text-danger">*</strong></label>
+                                        </div>
+                                        <div class="col-6">
+                                            <select ng-model="BusinessPartnerList.Currency" class="form-control">
+                                                <option value="">Select</option>
+                                                <option ng-repeat="z in CurrencyData" value="{{z.CurrCode}}">{{z.CurrName}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row mt-1">
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Phone no.<strong class="text-danger">*</strong></label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="tel" placeholder="Enter your Phone number" numbers-Only ng-model="BusinessPartnerList.PhoneNum" maxlength="10" class="form-control" name="phonevalidation" ng-pattern="phonenumbervalidation" />
+                                            <span ng-show="createBP.phonevalidation.$dirty" class="validation">
+                                                <span ng-show="createBP.phonevalidation.$error.pattern">Invalid Number</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Email<strong class="text-danger">*</strong></label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="email" placeholder="Enter your mail id" ng-model="BusinessPartnerList.Email" class="form-control" name="validateemail" ng-pattern="emailvalidation" />
+                                            <span ng-show="createBP.validateemail.$dirty" class="validation">
+                                                <span ng-show="createBP.validateemail.$error.pattern">Please Enter Valid Email</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Website</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" placeholder="Enter your website" ng-model="BusinessPartnerList.Website" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Password<strong class="text-danger">*</strong></label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="password" placeholder="Enter password" numbers-Only ng-model="BusinessPartnerList.Password" class="form-control" />                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Contact Person</legend>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Contact ID<strong class="text-danger">*</strong></label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" placeholder="Enter the person ID" ng-model="ContactPersonlist.ContactID" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Gender<strong class="text-danger">*</strong></label>
+                                        </div>
+                                        <div class="col-6">
+                                            <select ng-model="ContactPersonlist.gender" class="form-control">
+                                                <Option value="">Select</Option>
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                                <option value="others">Others</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row mt-1">
+                                <div class="col-3">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Title</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" placeholder="Enter your Title" ng-model="ContactPersonlist.Tittle" class="form-control" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>First Name<strong class="text-danger">*</strong></label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" placeholder="Enter your first name" ng-model="ContactPersonlist.FirstName" class="form-control" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Middle Name</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" placeholder="Enter your middle name" ng-model="ContactPersonlist.MiddleName" class="form-control" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Last Name<strong class="text-danger">*</strong></label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" placeholder="Enter your Last name" ng-model="ContactPersonlist.LastName" class="form-control" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-1">
+                                <div class="col-3">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Position</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" placeholder="Enter your Position" ng-model="ContactPersonlist.Position" class="form-control" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Mobile Number<strong class="text-danger">*</strong></label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" placeholder="Enter your Mobile number" numbers-Only ng-model="ContactPersonlist.mobile" maxlength="10" name="mobile1" ng-pattern="phonenumbervalidation" class="form-control" autocomplete="off" />
+                                            <span ng-show="createBP.mobile1.$dirty" class="validation">
+                                                <span ng-show="createBP.mobile1.$error.pattern">Invalid Phone Number</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Email <strong class="text-danger">*</strong></label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" placeholder="Enter your E-mail address" ng-model="ContactPersonlist.Email" name="contactemail" ng-pattern="emailvalidation" class="form-control" autocomplete="off">
+                                            <span ng-show="createBP.contactemail.$dirty" class="validation">
+                                                <span ng-show="createBP.contactemail.$error.pattern">Please Enter Valid Email</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Address</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" placeholder="Enter your Address" ng-model="ContactPersonlist.Address" class="form-control" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <button type="button" class="btn btn-sm btn-info" ng-hide="showSavebutton" ng-click="AddContactPerson()">Add</button>
+                                </div>
+                            </div>
+
+                            <div class="row mt-1">
+                                <div class="table-responsive">
+                                    <table class=" table table-bordered table-striped custom-table">
+                                        <thead>
+                                            <tr>
+                                                <th>S.no</th>
+                                                <th>Contact Id</th>
+                                                <th>Gender</th>
+                                                <th>Title</th>
+                                                <th>First Name</th>
+                                                <th>Middle Name</th>
+                                                <th>Last Name</th>
+                                                <th>Position</th>
+                                                <th>Mobile</th>
+                                                <th>E-mail</th>
+                                                <th>Address</th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="y in ContactPersonArray">
+                                                <td>{{$index+1}}</td>
+                                                <td><input type="text" class="form-control" disabled value="{{y.ContactID}}" /></td>
+                                                <td><input type="text" class="form-control" disabled value="{{y.gender}}"></td>
+                                                <td><input type="text" class="form-control" disabled value="{{y.Tittle}}"></td>
+                                                <td><input type="text" class="form-control" disabled value="{{y.FirstName}}"></td>
+                                                <td><input type="text" class="form-control" disabled value="{{y.MiddleName}}"></td>
+                                                <td><input type="text" class="form-control" disabled value="{{y.LastName}}"></td>
+                                                <td><input type="text" class="form-control" disabled value="{{y.Position}}"></td>
+                                                <td><input type="text" class="form-control" disabled value="{{y.mobile}}"></td>
+                                                <td><input type="text" class="form-control" disabled value="{{y.Email}}"></td>
+                                                <td><input type="text" class="form-control" disabled value="{{y.Address}}"></td>
+                                                <td><button class="btn-info" ng-hide="showSavebutton" type="button" ng-click="EditConactPerson($index)"><i class="fa fa-edit"></i></button></td>
+                                                <td><button class="btn-success" ng-if="y.HideButton" type="button" ng-click="UpdateConactPerson($index)"><i class="fa fa-save"></i></button></td>
+                                                <td><button class="btn-danger" ng-hide="showSavebutton" type="button" ng-click="DeleteConactPerson($index)"><i class="fa fa-close"></i></button></td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Addresses</legend>
+                            <fieldset class="scheduler-border">
+                                <legend class="scheduler-border" ng-if="BusinessPartnerList.Type==='C'">Bill To Address</legend>
+                                <legend class="scheduler-border" ng-if="BusinessPartnerList.Type==='S'">Pay To</legend>
+
+                                <div class="row mt-1">
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Address ID<strong class="text-danger">*</strong></label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" ng-model="BillToPayTolist.AddressID" placeholder="Enter your Address ID" class="form-control" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Address 1</label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" ng-model="BillToPayTolist.Address1" placeholder="Enter your address" class="form-control" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Address 2</label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" ng-model="BillToPayTolist.Address2" placeholder="Enter your address" class="form-control" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Street/PO Box</label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" ng-model="BillToPayTolist.StreetPoBox" placeholder="Enter your Street/PO box" autocomplete="off" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row mt-1">
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Block</label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" ng-model="BillToPayTolist.Block" placeholder="Enter your Block" class="form-control" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>City<strong class="text-danger">*</strong></label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" ng-model="BillToPayTolist.City" placeholder="Enter your city" class="form-control" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Zip Code<strong class="text-danger">*</strong></label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" ng-model="BillToPayTolist.Zipcode" placeholder="Enter your zip Code" class="form-control" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Country<strong class="text-danger">*</strong></label>
+                                            </div>
+                                            <div class="col-6">
+                                                <select ng-model="BillToPayTolist.Country" class="form-control">
+                                                    <option value="">Select</option>
+                                                    <option ng-repeat="x in CountryData" value="{{x.Code}}">{{x.Name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>State<strong class="text-danger">*</strong></label>
+                                            </div>
+                                            <div class="col-6">
+                                                <select ng-model="BillToPayTolist.State" ng-disabled="!(BillToPayTolist.Country=='IN')" class="form-control">
+                                                    <option value="">select</option>
+                                                    <option ng-repeat="q in StateData" value="{{q.Code}}">{{q.Name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Street No.</label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" ng-model="BillToPayTolist.StreetNo" placeholder="Enter your Street no." class="form-control" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Floor No</label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" ng-model="BillToPayTolist.Building_Floor_Room" placeholder="Enter your Building/Floor/Room" class="form-control" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row mt-1">
+                                    <div class="col-lg-6">
+                                        <label><strong>Check if pay to and ship to address is same</strong></label>
+                                        <input type="checkbox" ng-model="IsChecked" ng-change="ischeckedfun()">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <button class="btn btn-sm btn-info" type="button" ng-hide="BillshowSavebutton" ng-click="AddPayToBillToAddress()">Add</button>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-1">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped custom-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.no</th>
+                                                    <th>Address ID</th>
+                                                    <th>Address 1</th>
+                                                    <th>Address 2</th>
+                                                    <th>Street/PO Box</th>
+                                                    <th>Block</th>
+                                                    <th>City</th>
+                                                    <th>Zip Code</th>
+                                                    <th>Country</th>
+                                                    <th>State</th>
+                                                    <th>Street No.</th>
+                                                    <th>Building/Floor/Room</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="a in BillToPayToArray" class="text-center">
+                                                    <td>{{$index + 1}}</td>
+                                                    <td>{{a.AddressID}}</td>
+                                                    <td>{{a.Address1}}</td>
+                                                    <td>{{a.Address2}}</td>
+                                                    <td>{{a.StreetPoBox}}</td>
+                                                    <td>{{a.Block}}</td>
+                                                    <td>{{a.City}}</td>
+                                                    <td>{{a.Zipcode}}</td>
+                                                    <td>{{a.Country}}</td>
+                                                    <td>{{a.State}}</td>
+                                                    <td>{{a.StreetNo}}</td>
+                                                    <td>{{a.Building_Floor_Room}}</td>
+                                                    <td><button class="btn-info" ng-hide="BillshowSavebutton" type="button" ng-click="EditPayToBillToAddress($index)"><i class="fa fa-edit"></i></button></td>
+                                                    <td><button class="btn-success" ng-if="a.BillHideButton" type="button" ng-click="UpdatePayToBillToAddress($index)"><i class="fa fa-save"></i></button></td>
+                                                    <td><button class="btn-danger" ng-hide="BillshowSavebutton" type="button" ng-click="DeletePayToBillToAddress($index)"><i class="fa fa-close"></i></button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="scheduler-border">
+                                <legend class="scheduler-border" ng-if="BusinessPartnerList.Type==='C'">Ship To Address</legend>
+                                <legend class="scheduler-border" ng-if="BusinessPartnerList.Type==='S'">Ship From</legend>
+
+                                <div class="row mt-1">
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Address ID<strong class="text-danger">*</strong></label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" ng-model="ShipToShipFromlist.AddressID" placeholder="Enter your Address ID" class="form-control" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Address 1</label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" ng-model="ShipToShipFromlist.Address1" placeholder="Enter your address" class="form-control" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Address 2</label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" ng-model="ShipToShipFromlist.Address2" placeholder="Enter your address" class="form-control" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Street/PO Box</label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" ng-model="ShipToShipFromlist.StreetPoBox" placeholder="Enter your Street/PO box" autocomplete="off" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row mt-1">
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Block</label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" ng-model="ShipToShipFromlist.Block" placeholder="Enter your Block" class="form-control" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>City<strong class="text-danger">*</strong></label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" ng-model="ShipToShipFromlist.City" placeholder="Enter your city" class="form-control" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Zip Code<strong class="text-danger">*</strong></label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" ng-model="ShipToShipFromlist.Zipcode" placeholder="Enter your zip Code" class="form-control" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Country<strong class="text-danger">*</strong></label>
+                                            </div>
+                                            <div class="col-6">
+                                                <select ng-model="ShipToShipFromlist.Country" class="form-control">
+                                                    <option value="">Select</option>
+                                                    <option ng-repeat="x in CountryData" value="{{x.Code}}">{{x.Name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>State<strong class="text-danger">*</strong></label>
+                                            </div>
+                                            <div class="col-6">
+                                                <select ng-model="ShipToShipFromlist.State" ng-disabled="!(ShipToShipFromlist.Country=='IN')" class="form-control">
+                                                    <option value="">select</option>
+                                                    <option ng-repeat="q in StateData" value="{{q.Code}}">{{q.Name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Street No.</label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" ng-model="ShipToShipFromlist.StreetNo" placeholder="Enter your Street no." class="form-control" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Floor No</label>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" ng-model="ShipToShipFromlist.Building_Floor_Room" placeholder="Enter your Building/Floor/Room" class="form-control" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <button class="btn btn-sm btn-info" ng-hide="ShipshowSavebutton" type="button" ng-click="AddShipToShipFromAddress()">Add</button>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-1">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped custom-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.no</th>
+                                                    <th>Address ID</th>
+                                                    <th>Address 1</th>
+                                                    <th>Address 2</th>
+                                                    <th>Street/PO Box</th>
+                                                    <th>Block</th>
+                                                    <th>City</th>
+                                                    <th>Zip Code</th>
+                                                    <th>Country</th>
+                                                    <th>State</th>
+                                                    <th>Street No.</th>
+                                                    <th>Building/Floor/Room</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="a in ShipToShipFromArray">
+                                                    <td>{{$index + 1}}</td>
+                                                    <td>{{a.AddressID}}</td>
+                                                    <td>{{a.Address1}}</td>
+                                                    <td>{{a.Address2}}</td>
+                                                    <td>{{a.StreetPoBox}}</td>
+                                                    <td>{{a.Block}}</td>
+                                                    <td>{{a.City}}</td>
+                                                    <td>{{a.Zipcode}}</td>
+                                                    <td>{{a.Country}}</td>
+                                                    <td>{{a.State}}</td>
+                                                    <td>{{a.StreetNo}}</td>
+                                                    <td>{{a.Building_Floor_Room}}</td>
+                                                    <td><button class="btn-info" ng-hide="ShipshowSavebutton" type="button" ng-click="EditShipToShipFromAddress($index)"><i class="fa fa-edit"></i></button></td>
+                                                    <td><button class="btn-success" ng-if="a.ShipHideButton" type="button" ng-click="UpdateShipToShipFromAddress($index)"><i class="fa fa-save"></i></button></td>
+                                                    <td><button class="btn-danger" ng-hide="ShipshowSavebutton" type="button" ng-click="DeleteShipToShipFromAddress($index)"><i class="fa fa-close"></i></button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </fieldset>
+
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-sm btn-success">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+

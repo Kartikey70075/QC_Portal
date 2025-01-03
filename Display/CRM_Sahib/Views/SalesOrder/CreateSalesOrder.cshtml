@@ -1,0 +1,382 @@
+﻿
+@{
+    ViewBag.Title = "CreateSalesOrder";
+}
+
+<div class="container-fluid" ng-init="SaleOrderINIT();" ng-controller="SaleCtrl">
+    <form class="form-group" ng-submit="SubmitSalesOrder()">
+        <div class="row mt-2 mb-1">
+            <div class="col-9">
+                <div class="row ml-1">
+                    <h4 style="text-decoration:underline"><b>Sales Order</b></h4>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="row ">
+                    <div class="col-6">
+                        <label class="control-label float-right"><strong>Date:</strong></label>
+                    </div>
+                    <div class="col-6">
+                        <input id="datetoday" class="form-control" value="@DateTime.Now.ToString("dd/MM/yyyy")" disabled />
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-6">
+                        <label class="control-label float-right"><strong>Series:</strong></label>
+                    </div>
+                    <div class="col-6">
+                        <select class="form-control" ng-change="afterSelectSOseries(SalesOrderHeader.series)" required ng-model="SalesOrderHeader.series">
+                            <option value="">Select</option>
+                            <option ng-repeat="d in SeriesData" value="{{d.Series}}">{{d.SeriesName}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card baseBlock">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+                                <label>Customer Code<strong class="text-danger">*</strong></label>
+                            </div>
+                            <div class="col-6">
+                                <div angucomplete-alt id="SOCustomerCode" placeholder="Enter Customer Code.." pause="100" ng-model="SalesOrderHeader.CustomerCode"
+                                     selected-object="AfterSelectedSOBP" local-data="OcrdData" search-fields="CardCode" input-class="form-control"
+                                     title-field="CardCode" description-field="CardName" minlength="1" match-class="highlight"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+                                <label>Doc Number</label>
+                            </div>
+                            <div class="col-6">
+                                <input type="text" class="form-control" disabled ng-model="SalesOrderHeader.DocNumber" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+                                <label>Customer Name<strong class="text-danger">*</strong></label>
+                            </div>
+                            <div class="col-6">
+                                <div angucomplete-alt id="SOCustomerName" placeholder="Enter Customer Name.." pause="100" ng-model="SalesOrderHeader.CustomerName"
+                                     selected-object="AfterSelectedSOBP" local-data="OcrdData" search-fields="CardName" input-class="form-control"
+                                     title-field="CardName" description-field="CardCode" minlength="1" match-class="highlight"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+                                <label>Posting Date<strong class="text-danger">*</strong></label>
+                            </div>
+                            <div class="col-6">
+                                <input class="form-control" placeholder="Select Posting Date..." moment-picker="SalesOrderHeader.PostingDate" locale="en" format="DD-MM-YYYY" ng-model="SalesOrderHeader.PostingDate"
+                                       ng-model-options="{ updateOn: 'blur' }" start-view="day" today="true" keyboard="true" show-header="true" autoclose="true"
+                                       set-on-select="false" id="calander_select" autocomplete="off" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+                                <label>Contact Person<strong class="text-danger">*</strong></label>
+                            </div>
+                            <div class="col-6">
+                                <select class="form-control" required ng-model="SalesOrderHeader.ContactPerson">
+                                    <option value="" selected>--Select--</option>
+                                    <option ng-repeat="x in OCPR" value="{{x.CntctCode}}">{{x.Name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+                                <label>Delivery Date<strong class="text-danger">*</strong></label>
+                            </div>
+                            <div class="col-6">
+                                <input class="form-control" placeholder="Select Delivery Date..." moment-picker="SalesOrderHeader.DeliveryDate" locale="en" format="DD-MM-YYYY" ng-model="SalesOrderHeader.DeliveryDate"
+                                       ng-model-options="{ updateOn: 'blur' }" start-view="day" today="true" keyboard="true" show-header="true" autoclose="true"
+                                       set-on-select="false" id="calander_select" autocomplete="off" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+                                <label>Branch<strong class="text-danger">*</strong></label>
+                            </div>
+                            <div class="col-6">
+                                <select class="form-control" required ng-model="SalesOrderHeader.BranchCode">
+                                    <option value="">--Select--</option>
+                                    <option ng-repeat="x in OBPLData" value="{{x.BPLId}}">{{x.BPLName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+                                <label>Document Date<strong class="text-danger">*</strong></label>
+                            </div>
+                            <div class="col-6">
+                                <input class="form-control" placeholder="Select Document Date..." moment-picker="SalesOrderHeader.DocDate" locale="en" format="DD-MM-YYYY" ng-model="SalesOrderHeader.DocDate"
+                                       ng-model-options="{ updateOn: 'blur' }" start-view="day" today="true" keyboard="true" show-header="true" autoclose="true"
+                                       set-on-select="false" id="calander_select" autocomplete="off" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <ul class="nav nav-tabs mt-2" id="myTab" role="tablist">
+                    <li class="nav-item"><a data-toggle="tab" id="t1-tab" class="nav-link active" href="#t1" aria-controls="t1" aria-selected="true"><strong style="color:black">Content</strong></a></li>
+                    @*<li class="nav-item"><a data-toggle="tab" id="t2-tab" class="nav-link" href="#t2" aria-controls="t2" aria-selected="false"><strong style="color:black">Logistics</strong></a></li>
+                        <li class="nav-item"><a data-toggle="tab" id="t3-tab" class="nav-link" href="#t3" aria-controls="t3" aria-selected="false"><strong style="color:black">Accounting</strong></a></li>*@
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="t1" role="tabpanel" aria-labelledby="t1-tab">
+                        <div class="row">
+                            <div class="table-responsive" style="overflow-x:inherit;">
+                                <table class="table table-bordered table-striped ">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th class="text-center">Item Name</th>
+                                            <th class="text-center">Cat. No</th>
+                                            <th class="text-center">Quantity</th>
+                                            <th class="text-center">Unit Price</th>
+                                            @*<th class="text-center">Discount(%)</th>*@
+                                            <th class="text-center">Tax Code</th>
+                                            <th class="text-center">Total</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr class="text-center">
+                                            <th></th>
+                                            <th>
+                                                @*<div angucomplete-alt id="SOItemName" placeholder="Enter Item Name" pause="100"
+                                                    selected-object="AfterSelectSOItem" local-data="OSCNData" search-fields="ItemName" input-class="form-control"
+                                                    title-field="ItemName" description-field="CatNo" minlength="1" match-class="highlight" ng-model="SalesOrderRow.ItemName"></div>*@
+
+                                                <div angucomplete-alt id="SOItemName" placeholder="Enter Item Code" pause="100" local-search="filterFunction"
+                                                     selected-object="AfterSelectSOItem" local-data="OITMData" search-fields="ItemName,ItemCode" input-class="form-control"
+                                                     title-field="ItemCode" description-field="ItemName" minlength="1" match-class="highlight" ng-model="SalesOrderRow.ItemCode"></div>
+                                            </th>
+                                            <th>
+                                                <input type="text" ng-model="SalesOrderRow.SubCatName" class="form-control" />
+                                                @*<div angucomplete-alt id="SOCatno" placeholder="Enter Catalog No" pause="100"
+                                                    selected-object="AfterSelectSOItem" local-data="OSCNData" search-fields="CatNo" input-class="form-control"
+                                                    title-field="CatNo" description-field="ItemName" minlength="1" match-class="highlight" ng-model="SalesOrderRow.SubCatName"></div>*@
+                                            </th>
+                                            <th> <input type="text" ng-model="SalesOrderRow.Qty" amount-Only class="form-control"></th>
+                                            <th> <input type="text" ng-model="SalesOrderRow.UnitPrice" amount-Only class="form-control"></th>
+                                            @*<th> <input type="text" ng-model="SalesOrderRow.Discount" amount-Only class="form-control"></th>*@
+                                            <th>
+                                                <select ng-model="SalesOrderRow.Taxcode" class="form-control" ng-blur="SORowTotalCaluc()">
+                                                    <option value="" disabled>Select</option>
+                                                    <option ng-repeat="y in OSTCData" value="{{y.Code}}">{{y.Name}}</option>
+                                                </select>
+                                            </th>
+                                            <th> <input type="text" ng-model="SalesOrderRow.RowTotal" disabled class="form-control"></th>
+                                            <th><button ng-click="SOAddNewItemRow()" ng-hide="showSavebutton" type="button"><i class="fa fa fa-plus"></i></button></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                        <tr ng-repeat="x in SalesOrderArray" class="text-center">
+                                            <th>{{$index+1}}</th>
+                                            <th>{{x.ItemName}}</th>
+                                            @*<th>{{x.BpCatNo}}</th>*@
+                                            <th>{{x.SubCatName}}</th>
+                                            <th>{{x.Qty}}</th>
+                                            <th>{{x.UnitPrice}}</th>
+                                            @*<th>{{x.Discount}}</th>*@
+                                            <th>{{x.TaxName}}</th>
+                                            <th>{{x.RowTotal}}</th>
+                                            <th><button ng-click="SOEditItemRow($index)" type="button" ng-hide="showSavebutton"><i class="fa fa fa-edit"></i></button></th>
+                                            <th><button ng-click="SOUpdateItemRow($index)" type="button" ng-show="x.HideButton"><i class="fa fa fa-save"></i></button></th>
+                                            <th><button ng-click="SODeleteItemRow($index)" type="button" ng-hide="showSavebutton"><i class="fa fa fa-trash"></i></button></th>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:10px">
+                            <div class="col-12">
+                                <div class="card" style="width: 500px;float:right;">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label class="labletext"><strong>Total:</strong></label>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <input type="text" value="{{SalesOrderHeader.TotalBF-SalesOrderHeader.TaxAmount|number}}" disabled class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label class="labletext"><strong>Total Tax Amount:</strong></label>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <input type="text" ng-model="SalesOrderHeader.TaxAmount" disabled class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label class="labletext"><strong>Total Before Discount:</strong></label>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <input type="text" ng-model="SalesOrderHeader.TotalBF" disabled class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label class="labletext"><strong>Discount(%):</strong></label>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <input type="text" ng-model="SalesOrderHeader.BillDiscount" class="form-control" ng-blur="SOpendingcalulation()" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label class="labletext"><strong>Grand Total:</strong></label>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <input type="text" ng-model="SalesOrderHeader.BillTotal" disabled class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="t2" role="tabpanel" aria-labelledby="t2-tab">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label><strong>Ship To</strong></label>
+                                    </div>
+                                    <div class="col-4">
+                                        @*<select class="form-control" style="width: 220px;height: 30px;" ng-change="PQshipfun()" ng-model="PQShipAddress">
+                                                <option value="" selected>--Select--</option>
+                                                <option ng-repeat="a in PQ_ShipToadd" value="{{a.Address}}">{{a.Address}}</option>
+                                            </select>*@
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-4">
+                                <textarea class="form-control" ng-model="PQPutintxetbox"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label><strong>Pay To</strong></label>
+                                    </div>
+                                    <div class="col-4">
+                                        <select class="form-control" style="width: 220px;height: 30px;" ng-change="PQbillfun()" ng-model="PQbilltoadd">
+                                            <option value="" selected>--Select--</option>
+                                            <option ng-repeat="a in PQ_BilltoAdd" value="{{a.Address}}">{{a.Address}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-4">
+                                <textarea class="form-control" ng-model="PQbillputtext"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade show " id="t3" role="tabpanel" aria-labelledby="t3-tab">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label><strong>Payment Terms</strong></label>
+                                    </div>
+                                    <div class="col-6">
+                                        <select class="form-control" style="width: 220px;height: 30px;" ng-model="PQ_paymenttermcode">
+                                            <option value="" selected>--Select--</option>
+                                            <option ng-repeat="x in PQpaymentterm" value="{{x.GroupNum}}">{{x.PymntGroup}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+                                <label><strong>Remarks:</strong></label>
+                            </div>
+                            <div class="col-4">
+                                <textarea class="form-control" ng-model="Remarks"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <button type="submit" class="btn btn-sm btn-success" style="float:right">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
